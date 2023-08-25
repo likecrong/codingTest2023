@@ -52,5 +52,4 @@ if __name__ == '__main__':
     weight = 100
     truck_weights = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
     # return 110
-
     print(solution(bridge_length, weight, truck_weights))
