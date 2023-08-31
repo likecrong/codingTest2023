@@ -1,3 +1,6 @@
+# 문제 링크 :
+# https://school.programmers.co.kr/learn/courses/30/lessons/42626
+
 import heapq
 def solution(scoville, K):
     answer = 0 # scovile 지수를 K이상으로 만들기 위한 과정의 수
