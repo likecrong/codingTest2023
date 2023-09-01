@@ -1,88 +1,45 @@
 # 문제 링크 :
 # https://school.programmers.co.kr/learn/courses/30/lessons/42626
 
-import heapq
 from collections import deque
-
-def heapsort(iterable):
-    h = []
-    for value in iterable:
-        heapq.heappush(h, value)
-    return [heapq.heappop(h) for i in range(len(h))]
-
 def solution(jobs):
 
-    heapq.heapify(jobs)  # 작업 리스트, arrivalTime 기준 오름차순으로 정렬
+    time = []
     length = len(jobs)
 
-    queue = [] # 대기 큐, duration 기준 오름차순으로 정렬
-    #heapq.heapify(queue)
-    total = [] # 각 작업의 요청부터 종료까지 걸린 시간 리스트
+    # 1. 시작시간, 종료시간 + 요청시간, 소요시간
+    newJobs = []
+    for a, d in jobs:
+        newJobs.append([a, d, a, d])
+    queue = deque(newJobs)
 
-    time = 0
-
-    while True:
-        #print("시작")
-        #print(jobs)
+    while queue:
+        # 2. 요청 시간 순서로 정렬
         #print(queue)
-        #print('---------------------------------')
-        if len(jobs) == 0 and len(queue) == 0:
-            break
+        queue = sorted(queue)
+        print(queue)
 
-        # 1. time 기준, 작업 리스트 -> 대기큐
-        count = 0
-        for arrival, duraiton in jobs:
-            if time >= arrival:
-                queue.append([duraiton, arrival])
-                #heapq.heappush(queue,[duraiton, arrival])
-                count += 1
-            else:
-                break
+        # 3. 가장 첫번째 프로세스(target)의 종료시간과 나머지 프로세스의 시작시간 비교
+        # 나머지 프로세스의 시작시간 중에서 target의 종료 시간 이내에 들어오는 원소는
+        # 시작시간, 종료시간 update
+        target = queue.pop(0)
+        print(target)
+        time.append(target[1]+target[2]-target[3])
 
-        # 2. 작업 리스트 popleft
-        for _ in range(count):
-            heapq.heappop(jobs)
+        for index, process in enumerate(queue):
+            #print('1번 : ', target[1])
+            if target[1] >= process[0]:
+                queue[index][0] = target[1]
+                queue[index][1] = target[1] + queue[index][3]
+        print('--------------------------')
 
-        # 3. 대기 큐 및 time
-        if len(queue)!=0: # 1개 이상의 프로세스가 대기큐에 있다면
-            #queue = heapsort(queue) # 소요시간 기준, 오름차순 정렬
-
-            #print(queue)
-            queue.sort()
-            print(queue)
-
-            # 시간 계산
-            tmpTotal = []
-            for d,a in queue:
-                tmpTotal.append(time-a+d)
-            print('tmpTotal ',tmpTotal)
-
-            index = tmpTotal.index(min(tmpTotal))
-
-            #duraiton, arrival = heapq.heappop(queue)
-            duraiton, arrival = queue.pop(index)
-
-
-            time += duraiton
-            total.append(time-arrival)
-
-            #print(arrival)
-            #print(duraiton)
-            #print(time)
-            #print('---------------------------------')
-
-        else:
-            time += 1
-
-        #print("끝")
-        pass
-    return sum(total)//length
+    print(time)
+    return sum(time)//length
 
 if __name__ == '__main__':
     jobs = [[0, 3], [1, 9], [2, 6]]
     # 9
-
-
+    '''
     jobs = [[0, 10], [2, 10], [9, 10], [15, 2]]
     # 14
 
@@ -99,8 +56,8 @@ if __name__ == '__main__':
     # 2
 
     jobs = [[0, 3], [1, 9], [2, 6], [30, 3]]
-    # 7 틀림 8 나옴
-    '''
+    # 7
+
 
     jobs = [[0, 10], [4, 10], [15, 2], [5, 11]]
     # 15
@@ -110,12 +67,16 @@ if __name__ == '__main__':
 
     jobs = [[1, 9], [1, 4], [1, 5], [1, 7], [1, 3]]
     # 13
+    
+    jobs = [[0, 10], [2,10], [9,10], [15,2]]
 
+    jobs = [[0, 10], [2,10], [25,10], [25,2]]
+
+    
     jobs = [[24, 10], [28, 39], [43, 20], [37, 5], [47, 22], [20, 47], [15, 34], [15, 2], [35, 43], [26, 1]]
     # 72 틀림 75 나옴
-
+    
     jobs = [[24, 10], [28, 39], [43, 20], [37, 5], [47, 22], [20, 47], [15, 2], [15, 34], [35, 43], [26, 1]]
     # 72 틀림 75 나옴
 '''
     print(solution(jobs))
-
