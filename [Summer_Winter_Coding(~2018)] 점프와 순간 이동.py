@@ -1,6 +1,10 @@
 # 문제 링크 :
 # https://school.programmers.co.kr/learn/courses/30/lessons/12980
-
+'''
+1. 한 번에 K 칸 점프 : 건전지 사용 O ex) 1칸 당 건전지 1개씩
+2. (현재까지 온 거리)*2 (인덱스 기준) 순간이동 : 건전지 사용 X
+-> 점프 최소, 순간이동 최대
+'''
 # 두번째 코드 : 재귀 함수
 def solution(n):
     answer = recursion(n)
